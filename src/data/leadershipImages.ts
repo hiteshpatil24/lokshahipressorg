@@ -1,0 +1,9 @@
+export { DR_JAISWAL_IMG } from './jaiswalImageData';
+export { SANDIP_JADHAV_IMG } from './sandipImageData';
+export { SALUNKHE_IMG } from './salunkheImageData';
+export { ADV_PATIL_IMG } from './patilImageData';
+export { T_MADHAV_IMG } from './madhavImageData';
+export { BUDHWAT_IMG } from './budhwatImageData';
+export { KISHORE_PAWAR_IMG } from './pawarImageData';
+export { SANAM_PATIL_IMG } from './sanamPatilImageData';
+export { DR_ANIL_PATIL_IMG } from './anilPatilImageData';

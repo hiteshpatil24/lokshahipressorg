@@ -111,7 +111,7 @@ export const dict: Record<DictKey, { mr: string; en: string }> = {
     en: 'Our Role',
   },
   sec_vision: {
-    mr: 'आमचे ध्येय',
+    mr: 'VISION — आमचे ध्येय',
     en: 'Vision',
   },
   sec_org: {
@@ -127,7 +127,7 @@ export const dict: Record<DictKey, { mr: string; en: string }> = {
     en: "Journalists' Rights",
   },
   sec_social: {
-    mr: 'पत्रकारितेसोबत सामाजिक बांधिलकी',
+    mr: 'SOCIAL WORK — पत्रकारितेसोबत सामाजिक बांधिलकी',
     en: 'Social Work',
   },
   sec_achievements: {
@@ -143,8 +143,8 @@ export const dict: Record<DictKey, { mr: string; en: string }> = {
     en: 'MEDIA SECTION',
   },
   sec_events: {
-    mr: 'कार्यक्रम आणि उपक्रम',
-    en: 'Events & Programs',
+    mr: 'EVENTS — कार्यक्रम आणि उपक्रम',
+    en: 'Events',
   },
   sec_membership: {
     mr: 'MEMBERSHIP',
@@ -190,10 +190,6 @@ export const dict: Record<DictKey, { mr: string; en: string }> = {
     mr: 'लोगो',
     en: 'LOGO',
   },
-  wireframe: {
-    mr: 'वायरफ्रेम',
-    en: 'WIREFRAME',
-  },
 };
 
 interface LanguageContextType {
@@ -202,8 +198,8 @@ interface LanguageContextType {
   t: (key: DictKey) => string;
 }
 
-export const LanguageContext = createContext<LanguageContextType | null>(null);
-const STORAGE_KEY = 'wf-lang';
+const LanguageContext = createContext<LanguageContextType | null>(null);
+const STORAGE_KEY = 'lpm-lang';
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>('mr');

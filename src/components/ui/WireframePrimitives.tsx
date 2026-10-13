@@ -182,7 +182,7 @@ export function SectionShell({
 }: {
   id?: string;
   index?: string;
-  title?: React.ReactNode;
+  title: React.ReactNode;
   icon?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
@@ -190,16 +190,14 @@ export function SectionShell({
   return (
     <section id={id} className={cn('border-b border-dashed border-[#172A4A]/20 py-10 sm:py-12', className)}>
       <div className="mx-auto w-full max-w-6xl px-4">
-        {title && (
-          <div className="mb-6 sm:mb-8 flex items-center justify-between gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-              {icon}
-              <h2 className="text-base sm:text-2xl font-black tracking-tight text-[#172A4A] min-w-0 break-words leading-tight flex items-center gap-2">
-                {title}
-              </h2>
-            </div>
+        <div className="mb-6 sm:mb-8 flex items-center justify-between gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            {icon}
+            <h2 className="text-base sm:text-2xl font-black tracking-tight text-[#172A4A] min-w-0 break-words leading-tight flex items-center gap-2">
+              {title}
+            </h2>
           </div>
-        )}
+        </div>
         {children}
       </div>
     </section>
@@ -209,11 +207,9 @@ export function SectionShell({
 export function PageHero({
   titleKey,
   onNavigate,
-  showSubtitle = true,
 }: {
   titleKey: DictKey;
   onNavigate?: (path: string) => void;
-  showSubtitle?: boolean;
 }) {
   const { t } = useLanguage();
   return (
@@ -236,11 +232,9 @@ export function PageHero({
             {t(titleKey)}
           </h1>
         </div>
-        {showSubtitle && (
-          <p className="mt-2 text-xs font-medium text-[#172A4A]/70 max-w-2xl">
-            {t('page_subtitle')}
-          </p>
-        )}
+        <p className="mt-2 text-xs font-medium text-[#172A4A]/70 max-w-2xl">
+          {t('page_subtitle')}
+        </p>
       </div>
     </section>
   );

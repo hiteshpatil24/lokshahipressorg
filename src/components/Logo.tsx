@@ -1,66 +1,31 @@
-import React, { useContext } from 'react';
-import { LanguageContext } from '../context/LanguageContext';
+import React from 'react';
 
 export interface LogoProps {
   className?: string;
   size?: number;
   variant?: 'auto' | 'marathi' | 'empty';
   title?: string;
-  alt?: string;
 }
 
 /**
- * Official Lokshahi Patrakar Mahasangh Logo component.
- * Renders the crisp official emblem with automatic language adaptation.
+ * Universal Empty Circle Logo placeholder.
+ * Replaces the logo graphic with a clean circular placeholder.
  */
 export function Logo({
   className = 'h-10 w-10',
   size,
-  variant = 'auto',
   title,
-  alt,
 }: LogoProps) {
-  const langContext = useContext(LanguageContext);
-  const lang = langContext?.lang || 'mr';
-
-  if (variant === 'empty') {
-    return (
-      <div
-        style={size ? { width: size, height: size } : undefined}
-        className={`rounded-full border-2 border-dashed border-current/40 bg-current/5 shrink-0 transition-all ${className}`}
-        aria-label={title || 'Logo placeholder (empty circle)'}
-        role="img"
-      />
-    );
-  }
-
-  const isEnglish = variant !== 'marathi' && lang === 'en';
-  const primarySrc = isEnglish ? '/logo-official-en.svg' : '/logo-official-mr.svg';
-  const fallbackSrc = isEnglish
-    ? 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/svg%20artboard%20copy-ehciRDupxecaWve0aPWnNuQdU7GEvb.svg'
-    : 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/svg%20artboard-eWBKKf7NmMizh6trK5quOrzLpBPGhS.svg';
-
-  const logoAlt =
-    alt ||
-    title ||
-    (isEnglish ? 'Lokshahi Patrakar Mahasangh Bharat Logo' : 'लोकशाही पत्रकार महासंघ भारत लोगो');
-
   return (
     <img
-      src={primarySrc}
-      onError={(e) => {
-        if (e.currentTarget.src !== fallbackSrc) {
-          e.currentTarget.src = fallbackSrc;
-        }
-      }}
-      alt={logoAlt}
-      title={title || logoAlt}
+      src="/favicon.svg"
+      alt={title || 'Lokshahi Patrakar Mahasangh Bharat Logo'}
       style={size ? { width: size, height: size } : undefined}
-      className={`shrink-0 object-contain rounded-full ${className}`}
+      className={`rounded-full object-contain shrink-0 transition-all ${className}`}
     />
   );
 }
 
 export function MarathiLogoGraphic(props: LogoProps) {
-  return <Logo {...props} variant="marathi" />;
+  return <Logo {...props} />;
 }

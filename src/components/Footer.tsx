@@ -60,9 +60,9 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
         <div className="grid gap-8 md:grid-cols-12 text-left">
           {/* Brand & Motto from PDF Page 17 */}
           <div className="md:col-span-6 space-y-3">
-            <div className="flex items-center gap-3.5">
-              <Logo size={56} className="h-14 w-14 sm:h-16 sm:w-16 shrink-0 drop-shadow-sm" />
-              <span className="text-sm sm:text-base font-black text-white tracking-wide block leading-snug">
+            <div className="flex items-center gap-3">
+              <Logo size={40} className="h-10 w-10 text-white border-white/40 bg-white/5 shrink-0" />
+              <span className="text-sm sm:text-base font-black text-white tracking-wide block">
                 {lang === 'mr' ? 'लोकशाही पत्रकार महासंघ भारत' : 'LOKSHAHI PATRAKAR MAHASANGH BHARAT'}
               </span>
             </div>
@@ -73,10 +73,8 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
                 : 'For journalists’ justice, rights and dignity… For citizens’ justice… In defense of democracy…'}
             </p>
 
-            <div className="pt-2 text-xs sm:text-sm text-[#F7F3EC]/90 font-bold flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span>{lang === 'mr' ? '📍 राष्ट्रीय कार्यालय : बदलापूर (ठाणे) | राज्य कार्यालय : उलवे (नवी मुंबई)' : '📍 National Office : Thane | State Office : Navi Mumbai'}</span>
-              <span className="text-white/40">•</span>
-              <a href="mailto:help@lokshahipressorg.com" className="hover:text-[#E30620] transition-colors">✉️ help@lokshahipressorg.com</a>
+            <div className="pt-2 text-xs sm:text-sm text-[#F7F3EC]/90 font-bold flex items-center gap-1.5">
+              <span>{lang === 'mr' ? '📍 राष्ट्रीय कार्यालय : मुंबई' : '📍 National Office : Mumbai'}</span>
             </div>
           </div>
 
@@ -110,7 +108,7 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <a
-                href="https://www.facebook.com/share/1Ekodo5ECG/?mibextid=wwXIfr"
+                href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Facebook"
@@ -146,7 +144,7 @@ export function Footer({ onNavigate }: { onNavigate?: (path: string) => void }) 
                 <XIcon size={16} />
               </a>
               <a
-                href="https://wa.me/918788734440"
+                href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="WhatsApp"

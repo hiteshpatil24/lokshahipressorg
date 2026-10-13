@@ -1,45 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
+import { realPressClippings } from '../../data/newsAndEditorial';
 
 export function MediaCoverage() {
   const { lang } = useLanguage();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const clippingImages = [
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0.2-hVgu4X76jUFd201E7zBdPqVsJ25wXk.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0.1-2K7d7ZZsvVEpxt8dR31lwwWb0V0Eug.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0.3-Jogr8dMKM2wfZXApSKjtt2Ipa9uoaN.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0.5-OUqHyNmEhLpRUmGhKrH0FF316P0OK0.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0.4-p2octuouPCofN5F725O3prDLDVi6Zt.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1-mT1pxCXptDN376cM2UW1Am7iLDqBTy.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3-QM8N3fPa7QO1bekWuaJu2oK6qLShaG.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/2-y2zjj0342VG2lPjlmvVnprUxhVw03x.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4-PEVnjTYYU47WWWuL0bOduge9VNUQla.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-37hlqIypEhwBIubazFmmapiYxW91tv.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6.5-dqwmXhrxoBgcpbWPGRZuyvaNSMQR4O.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/6-eOLlAh7z7rKBmKUkhLPd8r5QGWvwTk.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/7-TFN1jgNET9aCevU8tjKXrW6OHdtEn2.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/8-y7baYHYusgjS5TUmASjU5Koxamx0r1.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9-9LpzGdRKkxmJCAOKSxx87y4ZlTABe9.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9-J4SMTvYoqpCWn9nP5HL9Q5xbJY9uR5.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/11-oa5FcsJpjvjUDsy9odjMd0yswAUjLh.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/12-C18BYdEq4mTeqqNe80PWJn5o3RNR9X.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/13-5vuPKrWBcJmXm9ooUkUyhznlRwD91P.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/15-oOwBnLslD8anbr1yvoSoUaVfh4MM0E.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/17-jb0bRuVDtXRdz58AxrbisaNG6l81WM.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-10%20at%2011.31.23%20PM-GP4JS0UdgG5CKu5J1LlPJdEDXETOQB.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/last-dSEOaeCew5Vp9vyrmxtGNuUClDGgyc.jpg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-10%20at%2011.36.59%20PM-fiKwGD4PkOZqLEmzKPCTE4VOMKczrp.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-10%20at%2011.36.59%20PMlast-eCCoHoLQYmC9MNEWBSiy1LapGQEfsR.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-10%20at%2011.37.00%20PM-QyHJJmAXhPabZNmeSPIQot5Q1CrD3G.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-10%20at%2011.37.00%20PMlast1-uYU819B1AbpjmbUzfSqcN22ELWdO5P.jpeg',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-10%20at%2011.37.18%20PM-rSkJAVVVKJoEAkWQOKnngXtvUBE2ZD.jpeg',
-  ];
-
-  // Duplicate the gallery for seamless infinite looping autoscroll.
-  const scrollImages = [...clippingImages, ...clippingImages];
+  // Duplicated list for seamless infinite looping autoscroll
+  const scrollArticles = [...realPressClippings, ...realPressClippings];
 
   // Pause scrolling while hovered or touched
   const isScrollingPaused = isPaused;
@@ -104,59 +73,40 @@ export function MediaCoverage() {
           onTouchEnd={() => setIsPaused(false)}
           className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 select-none touch-pan-x [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {scrollImages.map((image, idx) => (
+          {scrollArticles.map((article, idx) => (
             <article
-              key={`${image}-${idx}`}
-              className="w-[270px] sm:w-80 shrink-0 rounded-2xl border-2 border-[#172A4A]/15 bg-white p-3 shadow-xs"
+              key={`${article.id}-${idx}`}
+              className="w-[270px] sm:w-80 h-72 sm:h-80 shrink-0 bg-white p-4 sm:p-5 rounded-2xl border-2 border-[#172A4A]/15 shadow-xs flex flex-col justify-between"
             >
-              <button
-                type="button"
-                onClick={() => setSelectedImage(image)}
-                className="group block w-full cursor-zoom-in text-left"
-                aria-label={lang === 'mr' ? 'सविस्तर बातमी वाचा' : 'Read full coverage'}
+              {/* 1. Only Date at top */}
+              <div className="flex items-center justify-between pb-3 border-b border-[#172A4A]/10 text-xs">
+                <span className="font-bold text-[#172A4A] tracking-wide text-xs sm:text-sm">
+                  {lang === 'mr' ? article.dateMr : article.dateEn}
+                </span>
+                <span className="text-[10px] font-bold text-[#E30620] uppercase bg-[#E30620]/5 px-2 py-0.5 rounded border border-[#E30620]/20">
+                  {article.source}
+                </span>
+              </div>
+
+              {/* 2. Empty Layout Box in middle */}
+              <div className="my-3 flex-1 min-h-[140px] rounded-xl border border-dashed border-[#172A4A]/25 bg-[#F7F3EC]/50" />
+
+              {/* 3. Disabled button for now - clicking does not open anything */}
+              <div
+                className="pt-3 border-t border-[#172A4A]/10 w-full flex items-center justify-between text-xs font-black text-[#E30620] cursor-default select-none pointer-events-none"
+                aria-disabled="true"
               >
-                <div className="overflow-hidden rounded-xl border border-[#172A4A]/15 bg-[#F7F3EC]">
-                  <img
-                    src={image}
-                    alt={lang === 'mr' ? 'वृत्तपत्रातील बातमी' : 'Newspaper coverage'}
-                    className="h-72 w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02] sm:h-80"
-                    loading={idx < clippingImages.length ? 'eager' : 'lazy'}
-                  />
-                </div>
-                <div className="flex items-center justify-between px-1 pt-3 text-xs font-black text-[#E30620]">
-                  <span>{lang === 'mr' ? 'सविस्तर बातमी वाचा' : 'Read Full Coverage'}</span>
-                  <span aria-hidden="true">→</span>
-                </div>
-              </button>
+                <span className="tracking-wide">
+                  {lang === 'mr' ? 'सविस्तर बातमी वाचा' : 'Read Full Coverage'}
+                </span>
+                <span className="text-base" aria-hidden="true">
+                  →
+                </span>
+              </div>
             </article>
           ))}
         </div>
       </div>
-
-      {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label={lang === 'mr' ? 'सविस्तर बातमी' : 'Full news coverage'}
-          onClick={() => setSelectedImage(null)}
-        >
-          <button
-            type="button"
-            className="absolute right-4 top-4 rounded-full bg-white px-4 py-2 text-sm font-black text-[#172A4A] shadow-lg"
-            onClick={() => setSelectedImage(null)}
-            aria-label={lang === 'mr' ? 'बंद करा' : 'Close'}
-          >
-            ×
-          </button>
-          <img
-            src={selectedImage}
-            alt={lang === 'mr' ? 'सविस्तर वृत्तपत्र बातमी' : 'Full newspaper coverage'}
-            className="max-h-[92vh] max-w-full rounded-lg object-contain shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-          />
-        </div>
-      )}
     </section>
   );
 }

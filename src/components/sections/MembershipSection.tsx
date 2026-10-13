@@ -2,7 +2,6 @@ import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SectionShell, WFButton, WFCard } from '../ui/WireframePrimitives';
 import { GOOGLE_FORM_LINKS } from '../../config/forms';
-import { FileDown } from 'lucide-react';
 
 const membershipCategories = [
   {
@@ -59,16 +58,9 @@ export function MembershipSection({ onJoinClick }: { onJoinClick?: () => void })
             <h3 className="text-lg sm:text-xl font-black text-neutral-900">
               {lang === 'mr' ? 'लोकशाही पत्रकार महासंघ भारताचे सदस्य व्हा' : 'Become a Member of Lokshahi Patrakar Mahasangh Bharat'}
             </h3>
-            <a
-              href="/membership-form.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E30620] hover:bg-[#c7051b] text-white px-5 py-2.5 sm:px-6 sm:py-3 text-xs sm:text-sm font-black shadow-md hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 self-start sm:self-auto shrink-0 border border-red-700 cursor-pointer"
-              title={lang === 'mr' ? 'सभासद नोंदणी अर्ज पहा किंवा डाउनलोड करा' : 'View or download membership registration form'}
-            >
-              <FileDown className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span>{lang === 'mr' ? '📄 सभासद नोंदणी अर्ज डाउनलोड / पहा (PDF)' : '📄 Download / View Membership Form (PDF)'}</span>
-            </a>
+            <span className="inline-block self-start sm:self-auto text-[11px] font-black px-2.5 py-0.5 rounded-md bg-[#E30620]/10 text-[#E30620] border border-[#E30620]/20 uppercase tracking-wide">
+              {lang === 'mr' ? 'अधिकृत नोंदणी' : 'Official Enrollment'}
+            </span>
           </div>
           <p className="text-xs sm:text-sm font-bold text-[#172A4A] mb-2">
             {lang === 'mr' ? 'एकजुटीतून शक्ती… संघटनेतून हक्क…' : 'Strength through unity… Rights through organisation…'}
@@ -82,18 +74,28 @@ export function MembershipSection({ onJoinClick }: { onJoinClick?: () => void })
 
         {/* 4 Membership Categories */}
         <div>
-
+          <div className="flex items-center justify-between mb-3.5">
+            <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#172A4A]">
+              {lang === 'mr' ? 'सदस्यत्व श्रेणी व प्रकार' : 'Membership Categories'}
+            </h4>
+            <span className="text-xs font-semibold text-neutral-500">
+              {lang === 'mr' ? '४ मुख्य श्रेणी' : '4 Core Categories'}
+            </span>
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {membershipCategories.map((cat, idx) => (
               <WFCard
                 key={idx}
-                className="flex flex-col text-left p-4 sm:p-5 hover:border-[#172A4A] transition-all bg-white shadow-xs rounded-xl border border-neutral-200 h-full"
+                className="flex flex-col justify-between text-left p-4 sm:p-5 hover:border-[#172A4A] transition-all bg-white shadow-xs rounded-xl border border-neutral-200 h-full"
               >
                 <div>
-                  <div className="mb-3">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-neutral-300 bg-neutral-100 text-neutral-700 font-black text-xs">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-md border border-neutral-300 bg-neutral-100 text-neutral-700 font-black text-xs">
                       0{idx + 1}
+                    </span>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#172A4A]/5 text-[#172A4A] border border-[#172A4A]/10">
+                      {lang === 'mr' ? cat.badgeMr : cat.badgeEn}
                     </span>
                   </div>
 
@@ -101,35 +103,39 @@ export function MembershipSection({ onJoinClick }: { onJoinClick?: () => void })
                     {lang === 'mr' ? cat.titleMr : cat.titleEn}
                   </h4>
 
-                  <p className="text-xs text-neutral-600 leading-relaxed">
+                  <p className="text-xs text-neutral-600 leading-relaxed mb-3.5">
                     {lang === 'mr' ? cat.descMr : cat.descEn}
                   </p>
+                </div>
+
+                <div className="pt-3 border-t border-neutral-100 mt-auto">
+                  <span className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">
+                    {lang === 'mr' ? 'समाविष्ट सुविधा :' : 'Key Benefits :'}
+                  </span>
+                  <ul className="space-y-1 text-[11px] text-neutral-700 font-medium">
+                    {(lang === 'mr' ? cat.featuresMr : cat.featuresEn).map((feat, fIdx) => (
+                      <li key={fIdx} className="flex items-start gap-1.5">
+                        <span className="text-[#287A18] font-bold shrink-0">✓</span>
+                        <span className="line-clamp-1">{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </WFCard>
             ))}
           </div>
         </div>
 
-        {/* Direct Form CTA Buttons: Offline PDF Form + Online Google Form */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <a
-            href="/membership-form.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 text-xs sm:text-sm font-black tracking-wide uppercase shadow-md rounded-xl bg-[#E30620] hover:bg-[#c7051b] text-white text-center transition-all cursor-pointer border border-[#c7051b]"
-          >
-            <FileDown className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span>{lang === 'mr' ? '📄 सभासद नोंदणी अर्ज पहा / डाउनलोड करा (PDF)' : '📄 View / Download Form (PDF)'}</span>
-          </a>
-
+        {/* Exact Button text from PDF Page 14 - Direct Form CTA Button */}
+        <div className="mt-8 flex justify-center">
           <WFButton
-            variant="navy"
+            variant="solid"
             href={GOOGLE_FORM_LINKS.joinMembership}
             target="_blank"
             onClick={onJoinClick}
-            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 text-xs sm:text-sm font-black tracking-wide uppercase shadow-md bg-[#172A4A] hover:bg-[#0f1c32] text-white text-center rounded-xl"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 text-xs sm:text-sm font-black tracking-wide uppercase shadow-md bg-[#172A4A] hover:bg-[#0f1c32] text-white text-center"
           >
-            {lang === 'mr' ? 'ऑनलाइन नोंदणी फॉर्म ↗' : 'ONLINE MEMBERSHIP FORM ↗'}
+            {lang === 'mr' ? 'लोकशाही पत्रकार महासंघात सामील व्हा (फॉर्म) ↗' : 'JOIN LOKSHAHI PATRAKAR MAHASANGH (FORM) ↗'}
           </WFButton>
         </div>
       </div>

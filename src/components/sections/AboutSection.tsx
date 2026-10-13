@@ -2,21 +2,31 @@ import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SectionShell, WFCard } from '../ui/WireframePrimitives';
 import { Logo } from '../Logo';
+import { ABOUT_CONFERENCE_IMG } from '../../data/aboutImageData';
 
 export function AboutSection({ isHome = false }: { isHome?: boolean }) {
   const { t, lang } = useLanguage();
 
   return (
-    <SectionShell id="about">
-      {/* Featured Community & Leadership Banner Image */}
-      <div className="mb-8 sm:mb-10 overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-sm">
-        <img
-          src="/about-us.jpg?v=2"
-          alt={lang === 'mr' ? 'लोकशाही पत्रकार महासंघ भारत - राष्ट्रीय अधिवेशन व पदाधिकारी' : 'Lokshahi Patrakar Mahasangh Bharat - Members & Leadership'}
-          className="w-full h-auto block"
-        />
-      </div>
+    <>
+      {/* 1st Top Image: State Executive Meeting Banner (About Us Page Only) */}
+      {!isHome && (
+        <div className="mx-auto w-full max-w-6xl px-4 pt-6 sm:pt-8 pb-2">
+          <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-md transition-shadow hover:shadow-lg">
+            <img
+              src={ABOUT_CONFERENCE_IMG}
+              alt={
+                lang === 'mr'
+                  ? 'लोकशाही पत्रकार संघ महाराष्ट्र राज्य कार्यकारिणी बैठक'
+                  : 'Lokshahi Patrakar Sangh Maharashtra State Executive Meeting'
+              }
+              className="w-full h-auto object-cover max-h-[460px] select-none"
+            />
+          </div>
+        </div>
+      )}
 
+      <SectionShell id="about" title={t('sec_about')}>
       <div className="grid gap-10 lg:grid-cols-12 lg:items-start text-left">
         {/* Left Column: Authoritative Editorial Story */}
         <div className="space-y-6 lg:col-span-7 text-[#172A4A]">
@@ -150,5 +160,6 @@ export function AboutSection({ isHome = false }: { isHome?: boolean }) {
         </div>
       </div>
     </SectionShell>
+    </>
   );
 }

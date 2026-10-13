@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SectionShell, WFButton, WFCard } from '../ui/WireframePrimitives';
+import { RIGHTS_CONFERENCE_IMG } from '../../data/rightsImageData';
 
 const rightsPoints = [
   {
@@ -38,6 +39,19 @@ export function RightsSection({ onHelpdeskClick }: { onHelpdeskClick?: () => voi
 
   return (
     <SectionShell id="rights" title={t('sec_rights')}>
+      {/* Featured Journalist Rights Convention Banner */}
+      <div className="mb-8 overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-md transition-shadow hover:shadow-lg">
+        <img
+          src={RIGHTS_CONFERENCE_IMG}
+          alt={
+            lang === 'mr'
+              ? 'लोकशाही पत्रकार संघ महाराष्ट्र राज्य - पत्रकारांचे न्याय व हक्क संमेलन'
+              : 'Lokshahi Patrakar Sangh Maharashtra State - Journalist Rights Convention'
+          }
+          className="w-full h-auto block object-cover max-h-[460px] select-none"
+        />
+      </div>
+
       <div className="grid gap-8 lg:grid-cols-12 lg:items-start text-left">
         {/* Left Column: Context & Bullet Points from PDF Page 9 */}
         <div className="space-y-4 lg:col-span-7">

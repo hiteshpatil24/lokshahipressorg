@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { cn } from './ui/WireframePrimitives';
+import { Logo } from './Logo';
 import type { DictKey, Language } from '../types';
 
 export interface NavItemDef {
@@ -112,7 +113,7 @@ export function Header({
   currentPath: string;
   onNavigate: (path: string) => void;
 }) {
-  const { lang, t } = useLanguage();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (href: string) => {
@@ -136,13 +137,7 @@ export function Header({
           onClick={() => handleNavClick('/')}
           className="flex min-w-0 items-center gap-2 sm:gap-2.5 text-left cursor-pointer group flex-1"
         >
-          <img
-            src={lang === 'en'
-              ? 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/svg%20artboard%20copy-ehciRDupxecaWve0aPWnNuQdU7GEvb.svg'
-              : 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/svg%20artboard-eWBKKf7NmMizh6trK5quOrzLpBPGhS.svg'}
-            alt={lang === 'en' ? 'Lokshahi Patrakar Mahasangh logo' : 'लोकशाही पत्रकार महासंघ लोगो'}
-            className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 object-contain transition-transform group-hover:scale-105 drop-shadow-xs"
-          />
+          <Logo size={48} className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 group-hover:scale-105 transition-transform drop-shadow-xs" />
           <div className="min-w-0 flex-1">
             <div className="text-xs sm:text-base md:text-lg font-black tracking-tight text-[#172A4A] group-hover:text-[#E30620] transition-colors leading-tight line-clamp-2">
               {t('brand')}

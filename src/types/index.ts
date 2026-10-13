@@ -57,5 +57,4 @@ export type DictKey =
   | 'crumb_home'
   | 'page_subtitle'
   | 'image_ph'
-  | 'logo'
-  | 'wireframe';
+  | 'logo';

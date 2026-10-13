@@ -2,6 +2,7 @@ import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SectionShell, WFCard } from '../ui/WireframePrimitives';
 import { futureRoadmapPhases } from '../../data/pdfContent';
+import { ROADMAP_IMG } from '../../data/roadmapImageData';
 
 export function RoadmapSection() {
   const { t, lang } = useLanguage();
@@ -9,6 +10,19 @@ export function RoadmapSection() {
   return (
     <SectionShell id="roadmap" title={t('sec_roadmap')}>
       <div className="space-y-6 text-left">
+        {/* Roadmap Strategy Meeting Banner (Roadmap Section Only) */}
+        <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-md">
+          <img
+            src={ROADMAP_IMG}
+            alt={
+              lang === 'mr'
+                ? 'लोकशाही पत्रकार महासंघ - भविष्यकालीन रोडमॅप व नियोजन बैठक'
+                : 'Lokshahi Patrakar Mahasangh - Future Roadmap Planning Meeting'
+            }
+            className="w-full h-auto block object-cover max-h-[460px] select-none"
+          />
+        </div>
+
         {/* Intro from PDF Page 11 */}
         <div className="rounded-xl border-2 border-neutral-300 bg-neutral-50 p-6">
           <h3 className="text-base sm:text-lg font-bold text-neutral-900 mb-2">

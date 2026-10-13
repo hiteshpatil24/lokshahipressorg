@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SectionShell, WFCard } from '../ui/WireframePrimitives';
+import { ORG_IMG_1, ORG_IMG_2 } from '../../data/orgImages';
+import { Users, Building2, Calendar, MapPin } from 'lucide-react';
 
 interface TierItem {
   id: string;
@@ -82,17 +84,118 @@ export function OrganisationSection() {
     <SectionShell id="organisation" title={t('sec_org')}>
       <div className="space-y-8 text-left">
         {/* Intro Banner */}
-        <div className="rounded-xl border-2 border-neutral-300 bg-neutral-50 p-6">
-          <h3 className="text-base sm:text-lg font-bold text-neutral-900 mb-2">
+        <div className="rounded-2xl border-2 border-[#172A4A]/20 bg-gradient-to-r from-white via-neutral-50 to-[#172A4A]/5 p-6 sm:p-8 shadow-sm">
+          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#E30620] block mb-1">
+            STRUCTURE & FIELD OPERATIONS • संघटनात्मक रचना
+          </span>
+          <h3 className="text-xl sm:text-2xl font-black text-[#172A4A] mb-2 tracking-tight">
             {lang === 'mr'
-              ? 'संघटनेची रचना व अधिकार स्तर'
-              : 'Organisational Structure & Hierarchy'}
+              ? 'संघाची देशव्यापी संरचना व संघटनात्मक उपक्रम'
+              : 'Organisational Structure & Nationwide Network'}
           </h3>
-          <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed">
+          <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-3xl font-medium">
             {lang === 'mr'
               ? 'लोकशाही पत्रकार महासंघ भारताने देशातील पत्रकारांच्या हक्कांचे संरक्षण, सक्षमीकरण आणि जबाबदार पत्रकारितेच्या प्रसारासाठी राष्ट्रीय पातळीपासून गावपातळीपर्यंत एक मजबूत, पारदर्शक आणि लोकशाहीवादी संरचना उभी केली आहे.'
               : 'Lokshahi Patrakar Mahasangh Bharat has instituted a robust, decentralized democratic structure ranging from apex national policymaking bodies to grassroots rural networks, ensuring nationwide press defense and empowerment.'}
           </p>
+        </div>
+
+        {/* Organisation Action & Meeting Gallery */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#E30620] block">
+                MEETINGS & CONVENTIONS • थेट संघटनात्मक झलक
+              </span>
+              <h4 className="text-lg font-black text-[#172A4A]">
+                {lang === 'mr' ? 'संघटनात्मक बैठका व पत्रकार मेळावे' : 'Leadership Meetings & Conventions'}
+              </h4>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Image 1: Outdoor Gathering with Phetas */}
+            <div className="group rounded-2xl border border-[#172A4A]/15 bg-white overflow-hidden shadow-sm hover:shadow-md hover:border-[#172A4A]/40 transition-all duration-300 flex flex-col justify-between">
+              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-neutral-100">
+                <img
+                  src={ORG_IMG_1}
+                  alt={lang === 'mr' ? 'पत्रकार मेळावा व परिषद' : 'State Journalist Convention'}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute top-3 left-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-md bg-[#172A4A]/90 backdrop-blur-sm text-white px-3 py-1 text-xs font-black shadow-sm">
+                    <Users className="w-3.5 h-3.5 text-[#E30620]" />
+                    {lang === 'mr' ? 'राज्यस्तरीय पत्रकार महामेळावा' : 'State Journalist Convention'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-5 space-y-2">
+                <h5 className="text-base font-black text-[#172A4A] group-hover:text-[#E30620] transition-colors">
+                  {lang === 'mr'
+                    ? 'पत्रकार हक्क, सन्मान व संघटन निर्धार मेळावा'
+                    : 'Journalist Rights, Honor & Unity Convention'}
+                </h5>
+                <p className="text-xs text-neutral-600 leading-relaxed font-medium">
+                  {lang === 'mr'
+                    ? 'विविध जिल्हे, तालुके आणि ग्रामीण भागातील शेकडो पत्रकारांचा सन्मान, फेटे बांधून एकजुटीचा निर्धार आणि पत्रकार संरक्षण कायद्याच्या अंमलबजावणीसाठी आयोजित भव्य महामेळावा.'
+                    : 'Mass gathering of journalists from districts and rural areas in Maharashtra, united under Lokshahi Patrakar Mahasangh Bharat for welfare, dignity, and security.'}
+                </p>
+                <div className="flex items-center gap-4 text-[11px] text-neutral-500 font-semibold pt-1 border-t border-neutral-100">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                    {lang === 'mr' ? 'महाराष्ट्र व भारत' : 'Maharashtra & India'}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5 text-neutral-400" />
+                    {lang === 'mr' ? 'संघटनात्मक परिषद' : 'Organisational Meet'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Image 2: Indoor Conference Board Meeting */}
+            <div className="group rounded-2xl border border-[#172A4A]/15 bg-white overflow-hidden shadow-sm hover:shadow-md hover:border-[#172A4A]/40 transition-all duration-300 flex flex-col justify-between">
+              <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-neutral-100">
+                <img
+                  src={ORG_IMG_2}
+                  alt={lang === 'mr' ? 'राष्ट्रीय कार्यकारिणी बैठक' : 'National Executive Meeting'}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div className="absolute top-3 left-3">
+                  <span className="inline-flex items-center gap-1.5 rounded-md bg-[#172A4A]/90 backdrop-blur-sm text-white px-3 py-1 text-xs font-black shadow-sm">
+                    <Building2 className="w-3.5 h-3.5 text-[#E30620]" />
+                    {lang === 'mr' ? 'राष्ट्रीय कार्यकारिणी विचारमंथन' : 'National Executive Council'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-5 space-y-2">
+                <h5 className="text-base font-black text-[#172A4A] group-hover:text-[#E30620] transition-colors">
+                  {lang === 'mr'
+                    ? 'केंद्रीय धोरण, कायदेशीर सल्ला व संघटनात्मक विस्तार बैठक'
+                    : 'Apex Policy, Legal Advisory & Nationwide Expansion Meeting'}
+                </h5>
+                <p className="text-xs text-neutral-600 leading-relaxed font-medium">
+                  {lang === 'mr'
+                    ? 'राष्ट्रीय पदाधिकारी, कायदेशीर सल्लागार आणि प्रांतीय समन्वयकांची उच्चस्तरीय बैठक; पत्रकार कल्याण निधी आणि धोरणात्मक नियोजनावर सखोल चर्चा.'
+                    : 'High-level round-table conference of national leadership, legal counsel, and regional presidents focusing on institutional expansion and policy initiatives.'}
+                </p>
+                <div className="flex items-center gap-4 text-[11px] text-neutral-500 font-semibold pt-1 border-t border-neutral-100">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                    {lang === 'mr' ? 'केंद्रीय कार्यालय' : 'Headquarters'}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5 text-neutral-400" />
+                    {lang === 'mr' ? 'धोरणात्मक सत्र' : 'Strategic Planning'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Vertical Hierarchy Block Diagram */}

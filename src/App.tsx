@@ -45,6 +45,27 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const titles: Record<string, string> = {
+        '/': 'Lokshahi Patrakar Mahasangh Bharat | लोकशाही पत्रकार महासंघ भारत',
+        '/about': 'About Us — आमचे कार्य | Lokshahi Patrakar Mahasangh Bharat',
+        '/organisation': 'Organisation — संघटना | Lokshahi Patrakar Mahasangh Bharat',
+        '/leadership': 'Leadership — नेतृत्व | Lokshahi Patrakar Mahasangh Bharat',
+        '/rights': "Journalists' Rights — पत्रकार हक्क | Lokshahi Patrakar Mahasangh Bharat",
+        '/social-work': 'Social Work — सामाजिक बांधिलकी | Lokshahi Patrakar Mahasangh Bharat',
+        '/media': 'Media & Press — वृत्तपत्र प्रसिद्धी | Lokshahi Patrakar Mahasangh Bharat',
+        '/events': 'Events — कार्यक्रम | Lokshahi Patrakar Mahasangh Bharat',
+        '/roadmap': 'Future Roadmap — रोडमॅप | Lokshahi Patrakar Mahasangh Bharat',
+        '/membership': 'Membership — अधिकृत नोंदणी | Lokshahi Patrakar Mahasangh Bharat',
+        '/help-desk': 'Journalist & Public Helpdesk | Lokshahi Patrakar Mahasangh Bharat',
+        '/gallery': 'Gallery — गॅलरी | Lokshahi Patrakar Mahasangh Bharat',
+        '/contact': 'Contact Us — संपर्क | Lokshahi Patrakar Mahasangh Bharat',
+      };
+      document.title = titles[currentPath] || 'Lokshahi Patrakar Mahasangh Bharat | लोकशाही पत्रकार महासंघ भारत';
+    }
+  }, [currentPath]);
+
   const navigate = (path: string) => {
     setCurrentPath(path);
     if (typeof window !== 'undefined') {
@@ -127,7 +148,7 @@ export default function App() {
       case '/events':
         return (
           <>
-            <PageHero titleKey="nav_events" onNavigate={navigate} showSubtitle={false} />
+            <PageHero titleKey="nav_events" onNavigate={navigate} />
             <EventsSection />
           </>
         );
@@ -160,7 +181,7 @@ export default function App() {
       case '/gallery':
         return (
           <>
-            <PageHero titleKey="nav_gallery" onNavigate={navigate} showSubtitle={false} />
+            <PageHero titleKey="nav_gallery" onNavigate={navigate} />
             <GallerySection />
           </>
         );
@@ -168,7 +189,7 @@ export default function App() {
       case '/contact':
         return (
           <>
-            <PageHero titleKey="nav_contact" onNavigate={navigate} showSubtitle={false} />
+            <PageHero titleKey="nav_contact" onNavigate={navigate} />
             <ContactSection />
           </>
         );

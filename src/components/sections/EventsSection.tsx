@@ -1,139 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { SectionShell } from '../ui/WireframePrimitives';
-import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const eventPhotos = [
-  { image: '/event-1.jpg', alt: 'राज्य कार्यकारिणी निवड व नियुक्तीपत्र वाटप सोहळा' },
-  { image: '/event-2.jpg', alt: 'छत्रपती शिवाजी महाराज स्मारक अभिवादन व पूजन' },
-  { image: '/event-3.jpg', alt: 'पत्रकार प्रशिक्षण कार्यशाळा व सन्मान सोहळा' },
-  { image: '/event-4.jpg', alt: 'महाराष्ट्र राज्य कार्यकारिणी बैठक व सत्कार सोहळा' },
-  { image: '/event-5.jpg', alt: 'दैनिक लोकनेता २रा वर्धापन दिन व विशेषांक प्रकाशन सोहळा' },
-  { image: '/event-6.jpg', alt: 'राज्य कार्यकारिणी पदाधिकारी नियुक्तीपत्र वाटप' },
-  { image: '/event-7.jpg', alt: 'पत्रकार महासंघ संवाद व बैठक' },
-  { image: '/event-8.jpg', alt: 'राज्य कार्यकारिणी निवड कार्यक्रम व सन्मान' },
-  { image: '/event-9.jpg', alt: 'आरोग्य तपासणी शिबीर व सामाजिक उपक्रम' },
-  { image: '/event-10.jpg', alt: 'लोकशाही पत्रकार संघ बैठक व सन्मान सोहळा' },
-  { image: '/event-11.jpg', alt: 'छत्रपती शिवाजी महाराज भव्य शिवमूर्ती पूजन व सन्मान सोहळा' },
-];
+import { SectionShell, WFCard, WFImage } from '../ui/WireframePrimitives';
+import { sampleEvents } from '../../data/pdfContent';
 
 export function EventsSection() {
-  const { lang } = useLanguage();
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeIdx === null) return;
-      if (e.key === 'Escape') setActiveIdx(null);
-      if (e.key === 'ArrowLeft') {
-        setActiveIdx((prev) => (prev !== null && prev > 0 ? prev - 1 : eventPhotos.length - 1));
-      }
-      if (e.key === 'ArrowRight') {
-        setActiveIdx((prev) => (prev !== null && prev < eventPhotos.length - 1 ? prev + 1 : 0));
-      }
-    };
-    if (activeIdx !== null) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [activeIdx]);
+  const { t, lang } = useLanguage();
 
   return (
-    <SectionShell id="events">
-      <div className="space-y-6">
-        {/* Clean Responsive Photos Grid without descriptions or blue taglines */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-          {eventPhotos.map((item, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => setActiveIdx(idx)}
-              className="group relative overflow-hidden rounded-2xl border-2 border-[#172A4A]/15 bg-white shadow-sm hover:border-[#E30620] hover:shadow-lg transition-all duration-300 cursor-pointer text-left block w-full focus:outline-none focus:ring-2 focus:ring-[#E30620]"
-              title={lang === 'mr' ? 'पूर्ण फोटो पाहण्यासाठी क्लिक करा' : 'Click to view full image'}
-            >
-              <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100 relative">
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
+    <SectionShell id="events" title={t('sec_events')}>
+      <div className="space-y-6 text-left">
+        {/* Intro from PDF Page 13 */}
+        <div className="rounded-xl border-2 border-neutral-300 bg-neutral-50 p-6">
+          <h3 className="text-base sm:text-lg font-bold text-neutral-900 mb-2">
+            {lang === 'mr' ? 'कार्यक्रम आणि उपक्रम' : 'Events and Programs'}
+          </h3>
+          <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed">
+            {lang === 'mr'
+              ? 'महासंघाच्या माध्यमातून आयोजित करण्यात आलेल्या पत्रकारिता, सामाजिक, जनजागृती आणि संघटनात्मक कार्यक्रमांची माहिती येथे उपलब्ध असेल.'
+              : 'Information about journalism, social, awareness, and organizational programs organized through the federation will be available here.'}
+          </p>
+        </div>
+
+        {/* Note from PDF Page 13 */}
+        <div className="text-xs font-semibold text-neutral-500">
+          {lang === 'mr' ? 'प्रत्येक Event Card मध्ये :' : 'Each Event Card includes :'}
+        </div>
+
+        {/* Event Cards with exact items required in PDF Page 13 */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {sampleEvents.map((event, idx) => (
+            <WFCard key={event.id || idx} className="p-4 hover:border-neutral-500 transition-colors flex flex-col justify-between">
+              <div>
+                <WFImage
+                  label={lang === 'mr' ? '📷 फोटो' : '📷 Photo'}
+                  ratio="aspect-video"
+                  className="mb-3.5"
                 />
 
-                {/* Hover overlay with zoom icon */}
-                <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span className="flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-black text-[#172A4A] shadow-lg">
-                    <ZoomIn className="h-4 w-4 text-[#E30620]" />
-                    <span>{lang === 'mr' ? 'मोठा फोटो पहा' : 'View Full Image'}</span>
-                  </span>
+                <h4 className="text-base font-bold text-neutral-900 leading-snug mb-3">
+                  {lang === 'mr' ? 'कार्यक्रमाचे नाव' : 'Event Name'}
+                </h4>
+
+                <div className="space-y-2 text-xs text-neutral-700 mb-4 p-3 bg-neutral-50 rounded-lg border border-neutral-200">
+                  <div className="flex items-center gap-1.5">
+                    <span>📍</span>
+                    <span className="font-semibold">{lang === 'mr' ? 'ठिकाण' : 'Location'}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span>📅</span>
+                    <span className="font-semibold">{lang === 'mr' ? 'दिनांक' : 'Date'}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span>👥</span>
+                    <span className="font-semibold">{lang === 'mr' ? 'आयोजक / समिती' : 'Organizer / Committee'}</span>
+                  </div>
+                  <div className="pt-1.5 border-t border-neutral-200">
+                    <span className="font-semibold block mb-0.5">📝 {lang === 'mr' ? 'कार्यक्रमाची माहिती' : 'Program Details'}</span>
+                  </div>
                 </div>
               </div>
-            </button>
+
+              {/* Media links: Photo & Video as per PDF */}
+              <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-xs font-semibold">
+                <span className="flex items-center gap-1 text-neutral-600">
+                  📷 {lang === 'mr' ? 'फोटो' : 'Photo'}
+                </span>
+                <span className="flex items-center gap-1 text-neutral-600">
+                  🎥 {lang === 'mr' ? 'व्हिडिओ' : 'Video'}
+                </span>
+              </div>
+            </WFCard>
           ))}
         </div>
       </div>
-
-      {/* Full Image Lightbox Modal with Next / Prev */}
-      {activeIdx !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setActiveIdx(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-3 sm:p-6 transition-all"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-h-[94vh] max-w-6xl w-full flex flex-col items-center justify-center"
-          >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setActiveIdx(null)}
-              aria-label="Close image preview"
-              className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/75 text-white hover:bg-[#E30620] transition-colors cursor-pointer border border-white/20 shadow-lg"
-            >
-              <X className="h-6 w-6" />
-            </button>
-
-            {/* Previous Button */}
-            <button
-              type="button"
-              onClick={() => setActiveIdx((prev) => (prev !== null && prev > 0 ? prev - 1 : eventPhotos.length - 1))}
-              aria-label="Previous photo"
-              className="absolute left-2 sm:left-4 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/75 text-white hover:bg-[#E30620] transition-colors cursor-pointer border border-white/20 shadow-lg"
-            >
-              <ChevronLeft className="h-6 w-6 sm:h-7 sm:w-7" />
-            </button>
-
-            {/* Next Button */}
-            <button
-              type="button"
-              onClick={() => setActiveIdx((prev) => (prev !== null && prev < eventPhotos.length - 1 ? prev + 1 : 0))}
-              aria-label="Next photo"
-              className="absolute right-2 sm:right-4 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/75 text-white hover:bg-[#E30620] transition-colors cursor-pointer border border-white/20 shadow-lg"
-            >
-              <ChevronRight className="h-6 w-6 sm:h-7 sm:w-7" />
-            </button>
-
-            {/* Image Container */}
-            <div className="overflow-hidden rounded-2xl bg-neutral-950 shadow-2xl border border-white/10 max-h-[88vh] flex items-center justify-center">
-              <img
-                src={eventPhotos[activeIdx].image}
-                alt={eventPhotos[activeIdx].alt}
-                className="max-h-[86vh] max-w-full w-auto h-auto object-contain block mx-auto rounded-xl"
-              />
-            </div>
-
-            {/* Counter */}
-            <div className="mt-2 text-center text-xs font-semibold text-white/80 bg-black/60 px-3 py-1 rounded-full border border-white/10">
-              {activeIdx + 1} / {eventPhotos.length}
-            </div>
-          </div>
-        </div>
-      )}
     </SectionShell>
   );
 }

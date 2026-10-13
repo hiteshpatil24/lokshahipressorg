@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import { SectionShell, WFCard } from '../ui/WireframePrimitives';
+import { VISION_1_IMG } from '../../data/visionImageData';
 
 const visionItems = [
   {
@@ -60,22 +61,17 @@ export function VisionSection() {
   return (
     <SectionShell id="vision" title={t('sec_vision')}>
       <div className="space-y-6 text-left">
-        {/* Side-by-side Parallel Images */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-sm">
-            <img
-              src="/vision-1.jpg"
-              alt={lang === 'mr' ? 'लोकशाही पत्रकार महासंघ - पदाधिकारी बैठक व चर्चा' : 'Federation Leadership Meeting'}
-              className="w-full h-auto block object-cover"
-            />
-          </div>
-          <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-sm">
-            <img
-              src="/vision-2.jpg"
-              alt={lang === 'mr' ? 'लोकशाही पत्रकार महासंघ - निवेदन व संवाद' : 'Federation Delegation & Dialogue'}
-              className="w-full h-auto block object-cover"
-            />
-          </div>
+        {/* Single Vision Image (Kept only 1st image after आमचे ध्येय) */}
+        <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-md max-w-2xl">
+          <img
+            src={VISION_1_IMG}
+            alt={
+              lang === 'mr'
+                ? 'लोकशाही पत्रकार महासंघ - पदाधिकारी बैठक व चर्चा'
+                : 'Federation Leadership Meeting'
+            }
+            className="w-full h-auto block object-cover max-h-[460px] select-none"
+          />
         </div>
 
         {/* Mission Statement */}

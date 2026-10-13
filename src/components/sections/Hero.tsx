@@ -14,7 +14,6 @@ export interface BackgroundSlide {
   imageSrc: string;
   titleMr: string;
   titleEn: string;
-  durationMs: number;
 }
 
 export function Hero({
@@ -26,55 +25,47 @@ export function Hero({
 }) {
   const { lang } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   // 5 Background Slides for the event photos
   const backgroundSlides: BackgroundSlide[] = [
     {
       id: 1,
-      imageSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-ZyFveTX0izQX1vVdtTV2j9Hr1LSkf3.png',
-      titleMr: 'लोकशाही पत्रकार महासंघ बैठक व पत्रकार प्रशिक्षण मेळावा',
-      titleEn: 'Press Federation Meeting and Journalist Training Seminar',
-      durationMs: 2000,
+      imageSrc: '/hero-slide-1.jpg',
+      titleMr: 'शासकीय व प्रशासकीय संवाद — महासंघ शिष्टमंडळ भेट',
+      titleEn: 'Government Liaison & Administrative Delegation Meeting',
     },
     {
       id: 2,
-      imageSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-NPaPIGpkmpzfHfjquZmJDNy2xVyoEA.png',
-      titleMr: 'शिवस्मारक सोलापूर येथील पत्रकार व मान्यवरांचा कार्यक्रम',
-      titleEn: 'Journalists and Dignitaries at ShivSmarak Solapur',
-      durationMs: 2000,
+      imageSrc: '/hero-slide-2.jpg',
+      titleMr: 'लोकशाही पत्रकार संघ बैठक व पत्रकार प्रशिक्षण मेळावा',
+      titleEn: 'Lokshahi Press Federation Meeting & Journalist Training Seminar',
     },
     {
       id: 3,
-      imageSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-57ZnFUnCzZXAljLU1jgwfdl8G0YfQK.png',
-      titleMr: 'वृत्तपत्र व पत्रकारांचा विशेष कार्यक्रम',
-      titleEn: 'Special Newspaper and Journalist Event',
-      durationMs: 2000,
+      imageSrc: '/hero-slide-3.jpg',
+      titleMr: 'संघटनात्मक सत्कार व ज्येष्ठ सामाजिक मार्गदर्शन',
+      titleEn: 'Federation Leadership Guidance & Felicitation',
     },
     {
       id: 4,
-      imageSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-uGiASrsN5C6sr7gQ8coskqIi7UBvAw.png',
-      titleMr: 'ज्येष्ठ मान्यवरांची सदिच्छा भेट',
-      titleEn: 'Courtesy Meeting with Senior Dignitaries',
-      durationMs: 2000,
+      imageSrc: '/hero-slide-4.jpg',
+      titleMr: 'दैनिक लोकनेता द्वितीय वर्धापन दिन — वृत्तपत्र प्रकाशन',
+      titleEn: 'Dainik Lokneta 2nd Anniversary Publication',
     },
     {
       id: 5,
-      imageSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-92H0pAshBqurUFJIkPT3pUk4oUMhKe.png',
-      titleMr: 'दैनिक लोकनेता वर्धापन दिन सोहळा',
-      titleEn: 'Dainik Lokneta Anniversary Celebration',
-      durationMs: 2000,
-    },
-    {
-      id: 6,
-      imageSrc: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-deIesYcbJyAzcCmzvJem8F9RxpPs0E.png',
-      titleMr: 'प्रशासकीय अधिकाऱ्यांची सदिच्छा भेट',
-      titleEn: 'Courtesy Meeting with Administrative Officials',
-      durationMs: 2000,
+      imageSrc: '/hero-slide-5.jpg',
+      titleMr: 'दैनिक लोकनेता वृत्तपत्र प्रकाशन व वर्धापन दिन सोहळा',
+      titleEn: 'Dainik Lokneta Newspaper Publication & Anniversary Ceremony',
     },
   ];
 
+  // Auto-scroll timing:
+  // Slide 1 (idx 0) -> 5000ms (5 seconds as requested)
+  // Slide 2..5 (idx 1..4) -> 2000ms (2 seconds)
   useEffect(() => {
-    const duration = backgroundSlides[currentSlide].durationMs;
+    const duration = currentSlide === 0 ? 5000 : 2000;
     const timer = setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % backgroundSlides.length);
     }, duration);
@@ -82,105 +73,131 @@ export function Hero({
     return () => clearTimeout(timer);
   }, [currentSlide, backgroundSlides.length]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 45) {
+      // Swiped left -> next slide
+      setCurrentSlide((prev) => (prev + 1) % backgroundSlides.length);
+    } else if (diff < -45) {
+      // Swiped right -> prev slide
+      setCurrentSlide((prev) => (prev - 1 + backgroundSlides.length) % backgroundSlides.length);
+    }
+    setTouchStartX(null);
+  };
+
   return (
-    <section className="relative w-full aspect-[16/9] min-h-[210px] max-h-[240px] sm:aspect-auto sm:min-h-[460px] sm:max-h-none md:min-h-[500px] lg:min-h-[540px] flex items-center justify-start overflow-hidden border-b-4 border-[#E30620] bg-[#0B1E36]">
-      {/* Background Image Slides with Smooth Crossfade */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden select-none pointer-events-none z-0">
-        {backgroundSlides.map((slide, idx) => {
-          const isActive = idx === currentSlide;
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
-                isActive ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              <img
-                src={slide.imageSrc}
-                alt={slide.titleEn}
-                onError={(e) => {
-                  const fallback = `/hero-photo-${idx + 1}.jpg`;
-                  if (e.currentTarget.src !== fallback) {
-                    e.currentTarget.src = fallback;
-                  }
-                }}
-                className="w-full h-full object-cover object-center sm:object-[center_30%] scale-105 transition-transform duration-[3000ms] ease-out"
-              />
-            </div>
-          );
-        })}
+    <div className="w-full bg-[#F7F3EC] py-3 sm:py-5 lg:py-6">
+      <div className="mx-auto w-full max-w-6xl px-4">
+        <section
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          className="relative w-full flex items-center justify-start overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#172A4A]/20 shadow-xl min-h-[500px] xs:min-h-[540px] sm:min-h-[480px] md:min-h-[520px] lg:min-h-[560px] bg-[#0B1E36]"
+        >
+          {/* Background Image Slides with Smooth Crossfade */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden select-none pointer-events-none z-0">
+            {backgroundSlides.map((slide, idx) => {
+              const isActive = idx === currentSlide;
+              return (
+                <div
+                  key={slide.id}
+                  className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                    isActive ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  <img
+                    src={slide.imageSrc}
+                    alt={slide.titleEn}
+                    onError={(e) => {
+                      const fallback = `/hero-photo-${idx + 1}.jpg`;
+                      if (e.currentTarget.src !== fallback) {
+                        e.currentTarget.src = fallback;
+                      }
+                    }}
+                    className="w-full h-full object-cover object-[center_20%] sm:object-[center_30%] scale-105 transition-transform duration-[3000ms] ease-out"
+                  />
+                </div>
+              );
+            })}
 
-        {/* Balanced high-legibility dark overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/35" />
-      </div>
-
-      {/* Hero Foreground Content */}
-      <div className="relative z-10 w-full max-w-6xl px-3 sm:px-6 lg:px-8 py-4 sm:py-16 md:py-20 flex flex-col items-start text-left mr-auto">
-        <div className="flex flex-col items-start text-left max-w-4xl lg:max-w-5xl">
-          {/* Top Eyebrow Header */}
-          <div className="flex flex-wrap items-center justify-start gap-1 sm:gap-3 mb-1 sm:mb-4">
-            <span className="text-sm sm:text-base md:text-lg font-black uppercase tracking-wide text-white drop-shadow-md">
-              {lang === 'mr' ? 'लोकशाही पत्रकार महासंघ भारत' : 'LOKSHAHI PATRAKAR MAHASANGH BHARAT'}
-            </span>
-            <span className="hidden sm:inline text-white/50 text-base font-bold select-none">•</span>
-            <span className="text-sm sm:text-base md:text-lg font-black uppercase tracking-wide text-[#E30620] drop-shadow-md">
-              {lang === 'mr' ? 'राष्ट्रीय नोंदणीकृत व्यासपीठ' : 'Nationally Registered Body'}
-            </span>
+            {/* Balanced high-legibility dark overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/35" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-xl leading-tight sm:text-5xl sm:leading-tight md:text-6xl lg:text-7xl font-black text-white tracking-tight drop-shadow-2xl text-left">
-            {lang === 'mr' ? (
-              <>
-                <span className="text-[#E30620]">सत्यासाठी</span> लढणार, <span className="text-white">अन्यायाला</span> भिडणार!
-              </>
-            ) : (
-              <>
-                <span className="text-[#E30620]">Fight for Truth</span>, <span className="text-white">Stand Against Injustice!</span>
-              </>
-            )}
-          </h1>
+          {/* Hero Foreground Content */}
+          <div className="relative z-10 w-full px-5 sm:px-8 lg:px-12 py-12 sm:py-14 md:py-16 flex flex-col items-start text-left mr-auto">
+            <div className="flex flex-col items-start text-left max-w-4xl lg:max-w-5xl">
+              {/* Top Eyebrow Header */}
+              <div className="flex flex-wrap items-center justify-start gap-1.5 sm:gap-3 mb-3 sm:mb-4">
+                <span className="text-xs sm:text-base md:text-lg font-black uppercase tracking-wide text-white drop-shadow-md">
+                  {lang === 'mr' ? 'लोकशाही पत्रकार महासंघ भारत' : 'LOKSHAHI PATRAKAR MAHASANGH BHARAT'}
+                </span>
+                <span className="hidden sm:inline text-white/50 text-base font-bold select-none">•</span>
+                <span className="text-xs sm:text-base md:text-lg font-black uppercase tracking-wide text-[#E30620] drop-shadow-md">
+                  {lang === 'mr' ? 'राष्ट्रीय नोंदणीकृत व्यासपीठ' : 'Nationally Registered Body'}
+                </span>
+              </div>
 
-          {/* Strength Badges */}
-          <div className="mt-2 sm:mt-6 flex flex-wrap items-center justify-start gap-1 sm:gap-3 max-w-2xl">
-            {heroBadges.map((badge, idx) => (
-              <span
-                key={idx}
-                className={`rounded-xl border px-2 sm:px-3.5 py-0.5 sm:py-1.5 text-[9px] sm:text-sm font-bold shadow-sm backdrop-blur-md transition-transform hover:scale-105 ${badge.color}`}
-              >
-                {badge[lang]}
-              </span>
+              {/* Main Headline */}
+              <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.2] sm:leading-tight text-white tracking-tight drop-shadow-2xl text-left">
+                {lang === 'mr' ? (
+                  <>
+                    <span className="text-[#E30620]">सत्यासाठी</span> लढणार, <span className="text-white">अन्यायाला</span> भिडणार!
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[#E30620]">Fight for Truth</span>, <span className="text-white">Stand Against Injustice!</span>
+                  </>
+                )}
+              </h1>
+
+              {/* Strength Badges */}
+              <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-start gap-2 sm:gap-2.5 max-w-2xl">
+                {heroBadges.map((badge, idx) => (
+                  <span
+                    key={idx}
+                    className={`rounded-xl border px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold shadow-sm backdrop-blur-md transition-transform hover:scale-105 ${badge.color}`}
+                  >
+                    {badge[lang]}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Slide Indicator Dots */}
+          <div className="absolute bottom-4 right-4 sm:bottom-5 sm:right-6 z-30 flex items-center gap-1.5 sm:gap-2 bg-black/60 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/20 shadow-md">
+            {backgroundSlides.map((slide, idx) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => setCurrentSlide(idx)}
+                aria-label={`Slide ${idx + 1}`}
+                title={`Slide ${idx + 1} (${idx === 0 ? '5s' : '2s'})`}
+                className={`h-2.5 rounded-full transition-all cursor-pointer ${
+                  idx === currentSlide
+                    ? 'w-6 sm:w-7 bg-[#E30620]'
+                    : 'w-2.5 bg-white/60 hover:bg-white'
+                }`}
+              />
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* Interactive Slide Indicator Dots */}
-      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-8 z-30 flex items-center gap-1.5 sm:gap-2 bg-black/60 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/20 shadow-md">
-        {backgroundSlides.map((slide, idx) => (
-          <button
-            key={slide.id}
-            type="button"
-            onClick={() => setCurrentSlide(idx)}
-            aria-label={`Slide ${idx + 1}`}
-            title={`Slide ${idx + 1} (${slide.durationMs / 1000}s)`}
-            className={`h-2.5 rounded-full transition-all cursor-pointer ${
-              idx === currentSlide
-                ? 'w-6 sm:w-7 bg-[#E30620]'
-                : 'w-2.5 bg-white/60 hover:bg-white'
-            }`}
-          />
-        ))}
+          {/* Indian Tricolor Bottom Accent Band */}
+          <div className="absolute bottom-0 left-0 right-0 h-1.5 flex z-20">
+            <div className="h-full flex-1 bg-[#E6530C]" />
+            <div className="h-full flex-1 bg-white" />
+            <div className="h-full flex-1 bg-[#287A18]" />
+          </div>
+        </section>
       </div>
-
-      {/* Indian Tricolor Bottom Accent Band */}
-      <div className="absolute bottom-0 left-0 right-0 h-1.5 flex z-20">
-        <div className="h-full flex-1 bg-[#E6530C]" />
-        <div className="h-full flex-1 bg-white" />
-        <div className="h-full flex-1 bg-[#287A18]" />
-      </div>
-    </section>
+    </div>
   );
 }
 

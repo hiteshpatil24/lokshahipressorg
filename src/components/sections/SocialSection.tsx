@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { SectionShell, WFCard } from '../ui/WireframePrimitives';
-import { X, ZoomIn } from 'lucide-react';
+import { SectionShell, WFCard, WFImage } from '../ui/WireframePrimitives';
+import { SOCIAL_WORK_IMG } from '../../data/socialWorkImageData';
 
 const socialWorkAreas = [
   { mr: 'जनजागृती', en: 'Public Awareness' },
@@ -14,34 +14,24 @@ const socialWorkAreas = [
   { mr: 'लोकशाही जनजागृती', en: 'Democratic Awareness' },
 ];
 
-const socialPhotos = [
-  { image: '/social-1.jpg', alt: 'विद्यार्थी आरोग्य तपासणी व सामाजिक उपक्रम' },
-  { image: '/social-2.jpg', alt: 'शेतकरी चर्चासत्र व कृषी मार्गदर्शन' },
-  { image: '/social-3.jpg', alt: 'छत्रपती शिवाजी महाराज जयंती उत्सव व सत्कार' },
-  { image: '/social-4.jpg', alt: 'महिला सक्षमीकरण व जनसंवाद बैठक' },
-];
-
 export function SocialSection() {
   const { t, lang } = useLanguage();
-  const [activePhoto, setActivePhoto] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setActivePhoto(null);
-    };
-    if (activePhoto) {
-      window.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
-  }, [activePhoto]);
 
   return (
-    <SectionShell id="social">
+    <SectionShell id="social" title={t('sec_social')}>
       <div className="space-y-6 text-left">
+        {/* 1st Top Image: Grand Felicitation & Social Ceremony (Social Work Page Only) */}
+        <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-md transition-shadow hover:shadow-lg">
+          <img
+            src={SOCIAL_WORK_IMG}
+            alt={
+              lang === 'mr'
+                ? 'लोकशाही पत्रकार महासंघ - भव्य शिवमुर्ती प्रदान व सामाजिक सत्कार सोहळा'
+                : 'Lokshahi Patrakar Mahasangh - Grand Felicitation & Social Ceremony'
+            }
+            className="w-full h-auto block object-cover max-h-[460px] select-none"
+          />
+        </div>
         {/* Main Text Content strictly from PDF Page 10 */}
         <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
           <div className="space-y-4 lg:col-span-8">
@@ -91,65 +81,27 @@ export function SocialSection() {
           </div>
         </div>
 
-        {/* 4 Photos Grid - Enlarged 2-column layout without extra text lines */}
+        {/* Note from PDF Page 10: येथे प्रत्यक्ष घेतलेल्या कार्यक्रमांची नावे व फोटो जोडायचे आहेत */}
         <div className="pt-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-            {socialPhotos.map((photo, idx) => (
-              <button
+          <div className="mb-3 rounded-lg border border-neutral-300 bg-neutral-100/70 p-3 text-center">
+            <span className="text-xs font-bold text-neutral-800">
+              {lang === 'mr'
+                ? 'येथे प्रत्यक्ष घेतलेल्या कार्यक्रमांची नावे व फोटो जोडायचे आहेत'
+                : 'Names and photos of actual programs held are to be added here'}
+            </span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, idx) => (
+              <WFImage
                 key={idx}
-                type="button"
-                onClick={() => setActivePhoto(photo.image)}
-                className="group relative overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-sm hover:border-[#E30620] hover:shadow-md transition-all cursor-pointer text-left block w-full focus:outline-none focus:ring-2 focus:ring-[#E30620]"
-                title={lang === 'mr' ? 'पूर्ण फोटो पाहण्यासाठी क्लिक करा' : 'Click to view full image'}
-              >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100 relative">
-                  <img
-                    src={photo.image}
-                    alt={photo.alt}
-                    className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                  />
-                  {/* Subtle hover overlay with zoom icon */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-black text-[#172A4A] shadow-md">
-                      <ZoomIn className="h-4 w-4 text-[#E30620]" />
-                      <span>{lang === 'mr' ? 'मोठा फोटो पहा' : 'View Full Image'}</span>
-                    </span>
-                  </div>
-                </div>
-              </button>
+                label={`${t('image_ph')} ${idx + 1}`}
+                ratio="aspect-square"
+                className="shadow-2xs hover:border-neutral-400 transition-colors"
+              />
             ))}
           </div>
         </div>
       </div>
-
-      {/* Full Image Modal Lightbox */}
-      {activePhoto && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setActivePhoto(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 sm:p-6 transition-all"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative max-h-[92vh] max-w-5xl overflow-hidden rounded-2xl bg-neutral-900 shadow-2xl border border-white/10"
-          >
-            <button
-              type="button"
-              onClick={() => setActivePhoto(null)}
-              aria-label="Close image preview"
-              className="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white hover:bg-[#E30620] transition-colors cursor-pointer"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <img
-              src={activePhoto}
-              alt="Full view"
-              className="max-h-[88vh] max-w-full w-auto h-auto object-contain block mx-auto rounded-xl"
-            />
-          </div>
-        </div>
-      )}
     </SectionShell>
   );
 }

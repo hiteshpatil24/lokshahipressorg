@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
@@ -8,6 +9,25 @@ export default defineConfig(() => {
     plugins: [
       react(),
       tailwindcss(),
+      {
+        name: 'favicon-server',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            const url = req.url ? req.url.split('?')[0] : '';
+            if (url === '/favicon.ico' || url === '/favicon.png' || url === '/logo.png' || url === '/apple-touch-icon.png') {
+              const svgPath = path.resolve(__dirname, 'public/favicon.svg');
+              if (fs.existsSync(svgPath)) {
+                res.writeHead(200, {
+                  'Content-Type': 'image/svg+xml',
+                  'Cache-Control': 'public, max-age=31536000',
+                });
+                return res.end(fs.readFileSync(svgPath));
+              }
+            }
+            next();
+          });
+        },
+      },
       {
         name: 'google-sites-proxy',
         configureServer(server) {
@@ -41,11 +61,8 @@ export default defineConfig(() => {
     ],
     resolve: {
       alias: {
-        '@': path.resolve(import.meta.dirname, '.'),
+        '@': path.resolve(__dirname, '.'),
       },
-    },
-    css: {
-      postcss: {},
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
