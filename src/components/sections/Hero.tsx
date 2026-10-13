@@ -114,20 +114,21 @@ export function Hero({
                     src={slide.imageSrc}
                     alt={slide.titleEn}
                     onError={(e) => {
-                      const fallback = `/hero-photo-${idx + 1}.jpg`;
-                      if (e.currentTarget.src !== fallback) {
-                        e.currentTarget.src = fallback;
+                      const target = e.currentTarget;
+                      target.onerror = null;
+                      if (!target.src.includes('hero-photo-')) {
+                        target.src = `/hero-photo-${idx + 1}.jpg`;
                       }
                     }}
-                    className="w-full h-full object-cover object-[center_20%] sm:object-[center_30%] scale-105 transition-transform duration-[3000ms] ease-out"
+                    className="w-full h-full object-cover object-[center_25%] scale-105 transition-transform duration-[3000ms] ease-out"
                   />
                 </div>
               );
             })}
 
-            {/* Balanced high-legibility dark overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/35" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+            {/* High-legibility dark overlay gradient that preserves photo clarity */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0B1E36]/90 via-[#0B1E36]/65 to-[#0B1E36]/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1E36]/75 via-transparent to-[#0B1E36]/20" />
           </div>
 
           {/* Hero Foreground Content */}

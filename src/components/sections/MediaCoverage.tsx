@@ -1,17 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { realPressClippings } from '../../data/newsAndEditorial';
+import { realPressClippings, PressArticle } from '../../data/newsAndEditorial';
+import { Newspaper, Clock, Tag, X, ExternalLink } from 'lucide-react';
 
 export function MediaCoverage() {
   const { lang } = useLanguage();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<PressArticle | null>(null);
 
   // Duplicated list for seamless infinite looping autoscroll
   const scrollArticles = [...realPressClippings, ...realPressClippings];
-
-  // Pause scrolling while hovered or touched
-  const isScrollingPaused = isPaused;
 
   // Continuous smooth autoscroll loop
   useEffect(() => {
@@ -24,7 +23,7 @@ export function MediaCoverage() {
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
-      if (el && !isScrollingPaused) {
+      if (el && !isPaused) {
         scrollPos += 45 * dt; // 45px/second smooth movement
         const halfWidth = el.scrollWidth / 2;
         if (scrollPos >= halfWidth) {
@@ -39,7 +38,7 @@ export function MediaCoverage() {
 
     animId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animId);
-  }, [isScrollingPaused]);
+  }, [isPaused]);
 
   return (
     <section id="media-coverage" className="border-b border-[#172A4A]/10 bg-white py-14">
@@ -76,36 +75,107 @@ export function MediaCoverage() {
           {scrollArticles.map((article, idx) => (
             <article
               key={`${article.id}-${idx}`}
-              className="w-[270px] sm:w-80 h-72 sm:h-80 shrink-0 bg-white p-4 sm:p-5 rounded-2xl border-2 border-[#172A4A]/15 shadow-xs flex flex-col justify-between"
+              onClick={() => setSelectedArticle(article)}
+              className="w-[280px] sm:w-[320px] min-h-[300px] shrink-0 bg-white p-5 rounded-2xl border-2 border-[#172A4A]/15 shadow-xs hover:shadow-lg hover:border-[#E30620] transition-all flex flex-col justify-between cursor-pointer group"
             >
-              {/* 1. Only Date at top */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#172A4A]/10 text-xs">
-                <span className="font-bold text-[#172A4A] tracking-wide text-xs sm:text-sm">
-                  {lang === 'mr' ? article.dateMr : article.dateEn}
-                </span>
-                <span className="text-[10px] font-bold text-[#E30620] uppercase bg-[#E30620]/5 px-2 py-0.5 rounded border border-[#E30620]/20">
-                  {article.source}
-                </span>
+              <div>
+                {/* 1. Source & Date header */}
+                <div className="flex items-center justify-between pb-3 border-b border-[#172A4A]/10 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <Newspaper className="w-3.5 h-3.5 text-[#E30620]" />
+                    <span className="font-black text-[#172A4A] tracking-wide text-xs sm:text-sm">
+                      {article.source}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-bold text-[#E30620] uppercase bg-[#E30620]/10 px-2 py-0.5 rounded-full border border-[#E30620]/20">
+                    {lang === 'mr' ? article.categoryMr : article.categoryEn}
+                  </span>
+                </div>
+
+                {/* 2. Headline & Excerpt */}
+                <div className="my-3 space-y-2">
+                  <h4 className="text-sm font-bold text-[#172A4A] group-hover:text-[#E30620] transition-colors line-clamp-2 leading-snug">
+                    {lang === 'mr' ? article.headlineMr : article.headlineEn}
+                  </h4>
+                  <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed font-medium">
+                    {lang === 'mr' ? article.excerptMr : article.excerptEn}
+                  </p>
+                </div>
               </div>
 
-              {/* 2. Empty Layout Box in middle */}
-              <div className="my-3 flex-1 min-h-[140px] rounded-xl border border-dashed border-[#172A4A]/25 bg-[#F7F3EC]/50" />
-
-              {/* 3. Disabled button for now - clicking does not open anything */}
-              <div
-                className="pt-3 border-t border-[#172A4A]/10 w-full flex items-center justify-between text-xs font-black text-[#E30620] cursor-default select-none pointer-events-none"
-                aria-disabled="true"
-              >
-                <span className="tracking-wide">
-                  {lang === 'mr' ? 'सविस्तर बातमी वाचा' : 'Read Full Coverage'}
+              {/* 3. Footer with date & read button */}
+              <div className="pt-3 border-t border-[#172A4A]/10 w-full flex items-center justify-between text-xs">
+                <span className="text-[11px] text-neutral-500 font-semibold">
+                  {lang === 'mr' ? article.dateMr : article.dateEn}
                 </span>
-                <span className="text-base" aria-hidden="true">
-                  →
+                <span className="font-bold text-[#E30620] group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                  <span>{lang === 'mr' ? 'सविस्तर वाचा' : 'Read Full'}</span>
+                  <span>→</span>
                 </span>
               </div>
             </article>
           ))}
         </div>
+
+        {/* Modal for Full News Article View */}
+        {selectedArticle && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-xs"
+            onClick={() => setSelectedArticle(null)}
+          >
+            <div
+              className="relative max-w-lg w-full bg-white rounded-2xl overflow-hidden border border-[#172A4A]/20 shadow-2xl p-6 text-left"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+                <div className="flex items-center gap-2">
+                  <Newspaper className="w-5 h-5 text-[#E30620]" />
+                  <span className="text-sm font-black text-[#172A4A]">{selectedArticle.source}</span>
+                  <span className="text-[11px] font-bold text-neutral-500">• {selectedArticle.sourceType}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedArticle(null)}
+                  className="rounded-full p-1 text-neutral-400 hover:text-neutral-800 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <div className="flex items-center gap-2 text-xs text-neutral-500">
+                  <span>📅 {lang === 'mr' ? selectedArticle.dateMr : selectedArticle.dateEn}</span>
+                  <span>•</span>
+                  <span>⏱ {selectedArticle.readTime}</span>
+                </div>
+
+                <h3 className="text-base sm:text-lg font-black text-[#172A4A] leading-snug">
+                  {lang === 'mr' ? selectedArticle.headlineMr : selectedArticle.headlineEn}
+                </h3>
+
+                <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 text-xs sm:text-sm text-neutral-700 leading-relaxed font-medium">
+                  {lang === 'mr' ? selectedArticle.excerptMr : selectedArticle.excerptEn}
+                </div>
+
+                <p className="text-xs text-neutral-600 leading-relaxed">
+                  {lang === 'mr'
+                    ? 'लोकशाही पत्रकार महासंघ भारत देशभरातील पत्रकारांच्या सन्मानासाठी, अभिव्यक्तिस्वातंत्र्याच्या रक्षणासाठी व कायदेशीर मदतीसाठी कटिबद्ध आहे.'
+                    : 'Lokshahi Patrakar Mahasangh Bharat stands steadfast in defending press freedom, legal rights, and journalist security across the nation.'}
+                </p>
+              </div>
+
+              <div className="mt-5 pt-3 border-t border-neutral-200 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setSelectedArticle(null)}
+                  className="px-4 py-1.5 rounded-lg bg-[#172A4A] text-white text-xs font-bold hover:bg-[#E30620] transition-colors cursor-pointer"
+                >
+                  {lang === 'mr' ? 'बंद करा' : 'Close'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

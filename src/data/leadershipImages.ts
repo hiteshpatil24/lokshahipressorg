@@ -1,9 +1,9 @@
-export { DR_JAISWAL_IMG } from './jaiswalImageData';
-export { SANDIP_JADHAV_IMG } from './sandipImageData';
-export { SALUNKHE_IMG } from './salunkheImageData';
-export { ADV_PATIL_IMG } from './patilImageData';
-export { T_MADHAV_IMG } from './madhavImageData';
-export { BUDHWAT_IMG } from './budhwatImageData';
-export { KISHORE_PAWAR_IMG } from './pawarImageData';
-export { SANAM_PATIL_IMG } from './sanamPatilImageData';
-export { DR_ANIL_PATIL_IMG } from './anilPatilImageData';
+export const DR_JAISWAL_IMG = '/leaders/dr-jaiswal.jpg';
+export const SANDIP_JADHAV_IMG = '/leaders/sandip-jadhav.jpg';
+export const SALUNKHE_IMG = '/leaders/salunkhe.jpg';
+export const ADV_PATIL_IMG = '/leaders/adv-patil.jpg';
+export const T_MADHAV_IMG = '/leaders/t-madhav.jpg';
+export const BUDHWAT_IMG = '/leaders/budhwat.jpg';
+export const KISHORE_PAWAR_IMG = '/leaders/kishore-pawar.jpg';
+export const SANAM_PATIL_IMG = '/leaders/sanam-patil.jpg';
+export const DR_ANIL_PATIL_IMG = '/leaders/dr-anil-patil.jpg';

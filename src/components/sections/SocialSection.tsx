@@ -1,7 +1,8 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { SectionShell, WFCard, WFImage } from '../ui/WireframePrimitives';
+import { SectionShell, WFCard } from '../ui/WireframePrimitives';
 import { SOCIAL_WORK_IMG } from '../../data/socialWorkImageData';
+import { HeartHandshake, Award, Trees, Stethoscope, Users } from 'lucide-react';
 
 const socialWorkAreas = [
   { mr: 'जनजागृती', en: 'Public Awareness' },
@@ -14,13 +15,48 @@ const socialWorkAreas = [
   { mr: 'लोकशाही जनजागृती', en: 'Democratic Awareness' },
 ];
 
+const socialInitiatives = [
+  {
+    id: 1,
+    img: '/social-1.jpg',
+    titleMr: 'गरजू विद्यार्थ्यांना शैक्षणिक साहित्य व मदत वाटप',
+    titleEn: 'Educational Aid & Books Distribution to Underprivileged Students',
+    descMr: 'ग्रामीण भागातील होतकरू विद्यार्थ्यांना शालेय साहित्य व शिष्यवृत्ती सहाय्य.',
+    descEn: 'Distribution of school essentials and learning resources to rural youth.',
+  },
+  {
+    id: 2,
+    img: '/social-2.jpg',
+    titleMr: 'मोफत सर्वोपचार आरोग्य व रक्तदान शिबीर',
+    titleEn: 'Free Community Health & Blood Donation Camp',
+    descMr: 'नागरिक व पत्रकारांसाठी तज्ज्ञ डॉक्टरांच्या उपस्थितीत मोफत तपासणी.',
+    descEn: 'Comprehensive medical diagnoses and blood donation drive.',
+  },
+  {
+    id: 3,
+    img: '/social-3.jpg',
+    titleMr: 'वृक्षारोपण व पर्यावरण संवर्धन जनजागृती मोहीम',
+    titleEn: 'Tree Plantation & Environmental Conservation Drive',
+    descMr: 'पर्यावरण रक्षणाचा संदेश देत विविध ठिकाणी भव्य वृक्षारोपण उपक्रम.',
+    descEn: 'Statewide green cover enhancement and eco-awareness campaign.',
+  },
+  {
+    id: 4,
+    img: '/social-4.jpg',
+    titleMr: 'लोकशाही मूल्ये व नागरिक हक्क जनजागृती मेळावा',
+    titleEn: 'Democratic Ethics & Civic Rights Awareness Rally',
+    descMr: 'संविधानिक हक्क, माहिती अधिकार व सामाजिक न्यायावर जनजागृती व्याख्याने.',
+    descEn: 'Workshops empowering citizens on RTI, legal aid, and public rights.',
+  },
+];
+
 export function SocialSection() {
   const { t, lang } = useLanguage();
 
   return (
     <SectionShell id="social" title={t('sec_social')}>
       <div className="space-y-6 text-left">
-        {/* 1st Top Image: Grand Felicitation & Social Ceremony (Social Work Page Only) */}
+        {/* 1st Top Image: Grand Felicitation & Social Ceremony */}
         <div className="overflow-hidden rounded-2xl border-2 border-[#172A4A]/20 bg-white shadow-md transition-shadow hover:shadow-lg">
           <img
             src={SOCIAL_WORK_IMG}
@@ -32,6 +68,7 @@ export function SocialSection() {
             className="w-full h-auto block object-cover max-h-[460px] select-none"
           />
         </div>
+
         {/* Main Text Content strictly from PDF Page 10 */}
         <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
           <div className="space-y-4 lg:col-span-8">
@@ -81,23 +118,51 @@ export function SocialSection() {
           </div>
         </div>
 
-        {/* Note from PDF Page 10: येथे प्रत्यक्ष घेतलेल्या कार्यक्रमांची नावे व फोटो जोडायचे आहेत */}
+        {/* 4 Real Social Work Initiative Photos with Captions */}
         <div className="pt-2">
-          <div className="mb-3 rounded-lg border border-neutral-300 bg-neutral-100/70 p-3 text-center">
-            <span className="text-xs font-bold text-neutral-800">
-              {lang === 'mr'
-                ? 'येथे प्रत्यक्ष घेतलेल्या कार्यक्रमांची नावे व फोटो जोडायचे आहेत'
-                : 'Names and photos of actual programs held are to be added here'}
-            </span>
+          <div className="mb-4 rounded-xl border border-[#172A4A]/15 bg-gradient-to-r from-neutral-50 via-white to-neutral-50 p-4 text-left flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#E30620] block mb-0.5">
+                COMMUNITY OUTREACH • प्रत्यक्ष समाजोपयोगी उपक्रम
+              </span>
+              <span className="text-sm font-bold text-neutral-900">
+                {lang === 'mr'
+                  ? 'महासंघाच्या माध्यमातून राबविण्यात आलेले सामाजिक उपक्रम'
+                  : 'Social Welfare & Public Awareness Programs in Action'}
+              </span>
+            </div>
+            <HeartHandshake className="w-5 h-5 text-[#E30620] shrink-0" />
           </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, idx) => (
-              <WFImage
-                key={idx}
-                label={`${t('image_ph')} ${idx + 1}`}
-                ratio="aspect-square"
-                className="shadow-2xs hover:border-neutral-400 transition-colors"
-              />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {socialInitiatives.map((item) => (
+              <div
+                key={item.id}
+                className="group overflow-hidden rounded-2xl border border-[#172A4A]/15 bg-white shadow-xs hover:shadow-md hover:border-[#E30620] transition-all flex flex-col justify-between"
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
+                  <img
+                    src={item.img}
+                    alt={lang === 'mr' ? item.titleMr : item.titleEn}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <span className="rounded-md bg-[#172A4A]/85 backdrop-blur-xs text-white px-2 py-0.5 text-[10px] font-bold">
+                      #{item.id}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3.5 bg-white border-t border-neutral-100">
+                  <h4 className="text-xs sm:text-sm font-bold text-[#172A4A] group-hover:text-[#E30620] transition-colors line-clamp-2">
+                    {lang === 'mr' ? item.titleMr : item.titleEn}
+                  </h4>
+                  <p className="text-[11px] text-neutral-500 mt-1 line-clamp-2 leading-relaxed">
+                    {lang === 'mr' ? item.descMr : item.descEn}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
